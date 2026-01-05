@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VentanaApp extends JFrame {
-
+    //le damos a la ventana la clase del dao para hacer las gestiones
     private ContactoDAO dao;
 
     private JButton btnAñadir;
@@ -23,10 +23,11 @@ public class VentanaApp extends JFrame {
 
     public VentanaApp() {
         dao = new ContactoDAO();
-
+        /************************CREACION DE VENTANA*************************/
+        //la ventana es un borderlayout colocado basicamente en norte, centro y sur, con título, un espacio, y los botones
         setTitle("Agenda Proyecto");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(420, 420);
+        setSize(400, 400);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
@@ -36,7 +37,6 @@ public class VentanaApp extends JFrame {
         add(titulo, BorderLayout.NORTH);
 
         JPanel hueco = new JPanel();
-        hueco.setOpaque(false);
         add(hueco, BorderLayout.CENTER);
 
         JPanel panelBotones = new JPanel();
@@ -56,8 +56,12 @@ public class VentanaApp extends JFrame {
         panelBotones.add(btnListarTelefono);
 
         add(panelBotones, BorderLayout.SOUTH);
+        /************************CREACION DE VENTANA*************************/
+
 
         //********EVENTOS
+
+        /*En los eventos ya pedimos los parámetros necesarios para cada operacion usando JOptionPane.showInputDialog, y usando las operaciones del dao*/
         btnAñadir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -76,14 +80,16 @@ public class VentanaApp extends JFrame {
         btnModificar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String telefonoActual = JOptionPane.showInputDialog(null, "Introduce el teléfono de la persona a modificar", "Telefono", JOptionPane.QUESTION_MESSAGE);
+                List<Contacto> listaTelefono = new ArrayList<>();
+                listaTelefono = dao.ListarTelefonos();
 
+                String telefonoActual = JOptionPane.showInputDialog(null, listaTelefono + " Introduce el teléfono de la persona a modificar", "Telefono", JOptionPane.QUESTION_MESSAGE);
 
-                String nombre = JOptionPane.showInputDialog(null, "Introduce el nuevo nombre de la persona a añadir", "Nombre", JOptionPane.QUESTION_MESSAGE);
-                String direccion = JOptionPane.showInputDialog(null, "Introduce la nueva direccion de la persona a añadir", "Direccion", JOptionPane.QUESTION_MESSAGE);
-                String telefono = JOptionPane.showInputDialog(null, "Introduce el nuevo teléfono de la persona a añadir", "Telefono", JOptionPane.QUESTION_MESSAGE);
-                String aficion = JOptionPane.showInputDialog(null, "Introduce la nueva aficion de la persona a añadir", "Aficion", JOptionPane.QUESTION_MESSAGE);
-                String pandilla = JOptionPane.showInputDialog(null, "Introduce la nueva pandilla de la persona a añadir", "Pandilla", JOptionPane.QUESTION_MESSAGE);
+                String nombre = JOptionPane.showInputDialog(null, "Introduce el nuevo nombre de la persona a añadir (No puede estar vacio)", "Nombre", JOptionPane.QUESTION_MESSAGE);
+                String direccion = JOptionPane.showInputDialog(null, "Introduce la nueva direccion de la persona a añadir (No puede estar vacio)", "Direccion", JOptionPane.QUESTION_MESSAGE);
+                String telefono = JOptionPane.showInputDialog(null, "Introduce el nuevo teléfono de la persona a añadir (No puede estar vacio)", "Telefono", JOptionPane.QUESTION_MESSAGE);
+                String aficion = JOptionPane.showInputDialog(null, "Introduce la nueva aficion de la persona a añadir (No puede estar vacio)", "Aficion", JOptionPane.QUESTION_MESSAGE);
+                String pandilla = JOptionPane.showInputDialog(null, "Introduce la nueva pandilla de la persona a añadir (No puede estar vacio)", "Pandilla", JOptionPane.QUESTION_MESSAGE);
                 String vacaciones = JOptionPane.showInputDialog(null, "Introduce el nuevo plan de vacaciones de la persona a añadir", "Vacaciones", JOptionPane.QUESTION_MESSAGE);
 
                 Contacto con = new Contacto(nombre, direccion, telefono, aficion, pandilla, vacaciones);
@@ -95,7 +101,9 @@ public class VentanaApp extends JFrame {
         btnBorrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String telefono = JOptionPane.showInputDialog(null, "Introduce el teléfono de la persona a eliminar", "Telefono", JOptionPane.QUESTION_MESSAGE);
+                List<Contacto> listaTelefono = new ArrayList<>();
+                listaTelefono = dao.ListarTelefonos();
+                String telefono = JOptionPane.showInputDialog(null, listaTelefono + " Introduce el teléfono de la persona a eliminar", "Telefono", JOptionPane.QUESTION_MESSAGE);
                 dao.delete(telefono);
             }
         });
